@@ -53,12 +53,14 @@ export default function App() {
               }}
             />
             <Tab.Screen
-              name="Profile"
+              name="Cá nhân"
               component={ProfileScreen}
               options={{
                 tabBarIcon: ({ color, size }) => (
                   <Ionicons name="person-outline" size={size} color={color} />
                 ),
+                headerTitleAlign: "center",
+                headerShadowVisible: false,
               }}
             />
           </Tab.Navigator>
