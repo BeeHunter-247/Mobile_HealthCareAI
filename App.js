@@ -1,17 +1,38 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomePageScreen from "./screens/HomePageScreen";
 import MenuScreen from "./screens/MenuScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import PrescriptionScreen from "./screens/PrescriptionScreen";
 import { NavigationContainer } from "@react-navigation/native";
-import IconButton from "./components/UI/IconButton";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useEffect } from "react";
+import { registerForPushNotificationsAsync } from "./Services/registerForPushNotifications"; // Corrected path
+import * as Notifications from "expo-notifications";
 
 const Tab = createBottomTabNavigator();
 export default function App() {
+  useEffect(() => {
+    registerForPushNotificationsAsync();
+
+    const notificationListener = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        console.log("Nhận thông báo:", notification);
+      }
+    );
+
+    const responseListener =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log("Phản hồi thông báo:", response);
+      });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener);
+      Notifications.removeNotificationSubscription(responseListener);
+    };
+  }, []);
+
   return (
     <>
       <StatusBar style="auto" />
